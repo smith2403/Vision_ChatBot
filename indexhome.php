@@ -329,7 +329,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]) {
                 <div class="Food-item-margin">
                     <a href="#">
                         <div class="card-img">
-                            <img src="https://b.zmtcdn.com/data/pictures/chains/0/49340/4bbfa420fd9b003d78d5dc8f5b1242af_o2_featured_v2.jpg?output-format=webp"
+                            <img src="https://b.zmtcdn.com/data/dish_photos/cf6/6ef599645cd537611417488f7e0cacf6.jpg?output-format=webp"
                                 alt="restaurant img">
                         </div>
                         <div class="off">
