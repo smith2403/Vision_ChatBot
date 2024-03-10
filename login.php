@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'dbconnect.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -21,7 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows > 0) {
         // User found, login successful
-        header("Location: index.html");
+        $user = $result->fetch_assoc();
+        $_SESSION["login"] = true;
+        $_SESSION["user_id"] = $user["id"];
+        header("Location: indexhome.php");
         // You can redirect the user to a dashboard or home page after successful login
     } else {
         // User not found or incorrect password
