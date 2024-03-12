@@ -112,6 +112,7 @@ body {
 }
 
 .navbar .user-login a {
+    padding: 10px;
     text-decoration: none;
     color: #939393;
     cursor: pointer;

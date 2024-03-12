@@ -47,7 +47,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]) {
             <div class="nav-search">
                 <div class="add-bar">
                     <i class="fa-solid fa-location-dot" style="color: #ff828b;"></i>
-                    <input type="text" class="input-add" placeholder="Ashok Nagar, Sakinaka, Mumbai">
+                    <input type="text" class="input-add" placeholder="Mumbai Central, Malad West">
                     <i class="fa-solid fa-sort-down" style="color: #505050;"></i>
                 </div>
                 <div class="line">
@@ -615,6 +615,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]) {
         ?>
         <df-messenger intent="WELCOME" chat-title="Vision-ChatBot" agent-id="a28a7dfc-93ae-4161-9a32-8907602102fc"
             language-code="en" session-id="<?php echo $sessionId; ?>"></df-messenger>
+
     <?php
     }
     ?>
