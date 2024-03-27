@@ -40,26 +40,15 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]) {
         <div class="navbar">
             <div class="nav-logo">
                 <div class="logo">
-                    <h1 style="font-style: oblique;">VISION</h1>
+                    <h1 style="font-style: oblique;">Cresty</h1>
                 </div>
             </div>
 
             <div class="nav-search">
-                <div class="add-bar">
-                    <i class="fa-solid fa-location-dot" style="color: #ff828b;"></i>
-                    <input type="text" class="input-add" placeholder="Mumbai Central, Malad West">
-                    <i class="fa-solid fa-sort-down" style="color: #505050;"></i>
-                </div>
-                <div class="line">
-
-                </div>
                 <div class="search-food">
-                    <div class="search-icon">
-                        <i class="fa-solid fa-magnifying-glass" style="color: #939393;"></i>
-                    </div>
-                    <input type="text" class="input-food" placeholder="Search for restaurant, cuisine or a dish ">
+                    <h1>Greetings! <em>Desi Delights at Your Doorstep</em></h1>
                 </div>
-            </div>
+            </div> 
             <div class="user-login">
             <?php
     if (isset($_SESSION["login"]) && $_SESSION["login"]) {
@@ -74,8 +63,6 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]) {
                 <!-- <a href="login.html">Log in</a> -->
 
                 <a href="register.html">Sign up</a>
-
-
             </div>
         </div>
     </header>
@@ -684,7 +671,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]) {
                 </div>
             </div>
             <hr class="h-line">
-            <p class="copyright">© Vision™ Ltd. All rights reserved.</p>
+            <p class="copyright">©Cresty™ Ltd. All rights reserved.</p>
         </div>
     </footer>
 </body>

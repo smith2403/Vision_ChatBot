@@ -52,52 +52,92 @@ $result = mysqli_query($conn, $sql);
     </head>
 
     <body>
-        <header>
-            <!-- place navbar here -->
-        </header>
-        <main>
-            <?php
-        // Display the order tracking cards
-if (mysqli_num_rows($result) > 0) {
-    echo "<div class='container-fluid'>
-    <div class='row justify-content-center align-items-center' style='height: 100vh;'>"; // Center the cards
+    <header>
+        <div class="navbar">
+            <div class="nav-logo">
+                <div class="logo">
+                    <h1 style="font-style: oblique;">Cresty</h1>
+                </div>
+            </div>
 
-while ($rows = mysqli_fetch_assoc($result)) {
-    echo "
-    <div class='col-md-4 mb-4'>
-        <div class='card' style='width: 300px; height: 350px; border-radius: 20px; border: 2px solid #333;'>
-            <div class='card-body d-flex flex-column justify-content-center'>
-                <center>
-                    <h5 class='card-title' style='font-size: 24px; font-family: Arial, sans-serif; margin-bottom: 10px;'>Order ID: {$rows['order_id']}</h5>
-                    <p class='card-text' style='font-size: 20px; font-family: Arial, sans-serif; margin-bottom: 8px;'>Status: {$rows['status']}</p>
-                    <p class='card-text' style='font-size: 20px; font-family: Arial, sans-serif; margin-bottom: 8px;'>Payment: {$rows['payment']}</p>
-                    <p class='card-text' style='font-size: 20px; font-family: Arial, sans-serif; margin-bottom: 8px;'>Total Price: {$rows['total_price']}</p>
-                    <form action='submit.php' method='post'>
-                        <script
-                            src='https://checkout.stripe.com/checkout.js' class='stripe-button'
-                            data-key='{$publishableKey}'
-                            data-amount='{$rows['total_price']}' // Use the dynamic amount here
-                            data-name='FOOD CHATBOT'
-                            data-description='Bhuk lagi hai'
-                            data-image='https://seeklogo.com/images/D/dialogflow-logo-534FF34238-seeklogo.com.png'
-                            data-currency='inr'
-                            data-email='iamsmith1103@gmail.com'>
-                        </script>
-                    </form>
-                </center>
+            <div class="nav-search">
+                <div class="add-bar">
+                    <i class="fa-solid fa-location-dot" style="color: #ff828b;"></i>
+                    <input type="text" class="input-add" placeholder="Mumbai Central, Malad West">
+                    <i class="fa-solid fa-sort-down" style="color: #505050;"></i>
+                </div>
+                <div class="line">
+
+                </div>
+                <div class="search-food">
+                    <div class="search-icon">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #939393;"></i>
+                    </div>
+                    <input type="text" class="input-food" placeholder="Search for restaurant, cuisine or a dish ">
+                </div>
+            </div>
+            <div class="user-login">
+            <?php
+    if (isset($_SESSION["login"]) && $_SESSION["login"]) {
+        // User is logged in, display logout button
+        echo '<a href="logout.php">Log out</a>';
+        echo '<a href="datadisp.php">Payments</a>';
+    } else {
+        // User is not logged in, display login button
+        echo '<a href="login.html">Log in</a>';
+    }
+    ?>
+                <!-- <a href="login.html">Log in</a> -->
+
+                <a href="register.html">Sign up</a>
+
+
             </div>
         </div>
-    </div>";
+    </header>
+        <main>
+        <?php
+// Display the order tracking cards
+if (mysqli_num_rows($result) > 0) {
+    echo "<div class='container-fluid'>
+    <div class='row justify-content-center align-items-center' style='height: 70vh;'>"; // Center the cards
+
+    while ($rows = mysqli_fetch_assoc($result)) {
+        echo "
+        <div class='col-md-4 mb-4'>
+            <div class='card' style='width: 300px; height: 350px; border-radius: 20px; border: 2px solid #333;'>
+                <div class='card-body d-flex flex-column justify-content-center'>
+                    <center>
+                        <h5 class='card-title' style='font-size: 24px; font-family: Arial, sans-serif; margin-bottom: 10px;'>Order ID: {$rows['order_id']}</h5>
+                        <p class='card-text' style='font-size: 20px; font-family: Arial, sans-serif; margin-bottom: 8px;'>Status: {$rows['status']}</p>
+                        <p class='card-text' style='font-size: 20px; font-family: Arial, sans-serif; margin-bottom: 8px;'>Payment: {$rows['payment']}</p>
+                        <p class='card-text' style='font-size: 20px; font-family: Arial, sans-serif; margin-bottom: 8px;'>Total Price: {$rows['total_price']}</p>
+                        <form action='submit.php' method='post'>
+                            <input type='hidden' name='order_id' value='{$rows['order_id']}'>
+                            <script
+                                src='https://checkout.stripe.com/checkout.js' class='stripe-button'
+                                data-key='{$publishableKey}'
+                                data-amount='" . ($rows['total_price'] * 100) . "'
+                                data-name='FOOD CHATBOT'
+                                data-description='Your virtual Food Chatbot'
+                                data-image='https://seeklogo.com/images/D/dialogflow-logo-534FF34238-seeklogo.com.png'
+                                data-currency='inr'
+                                data-email='iamsmith1103@gmail.com'>
+                            </script>
+                        </form>
+                    </center>
+                </div>
+            </div>
+        </div>";
     }
 
-    echo "</table></div></div>";
+    echo "</div></div>";
 } else {
     echo "No orders found for the logged-in user";
     echo $userId;
 }
-
-mysqli_close($conn);
 ?>
+
         </main>
         <footer>
         <footer>
@@ -165,7 +205,7 @@ mysqli_close($conn);
                 </div>
             </div>
             <hr class="h-line">
-            <p class="copyright">© Vision™ Ltd. All rights reserved.</p>
+            <p class="copyright">©Cresty™ Ltd. All rights reserved.</p>
         </div>
     </footer>
         </footer>

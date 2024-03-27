@@ -2,44 +2,53 @@
 require('stripeconfig.php');
 include "dbconnect.php";
 
-// Fetch order tracking data from the database
-$sql = "SELECT * FROM `ordertracking`";
-$result = mysqli_query($conn, $sql);
+if (isset($_POST['stripeToken'])) {
+    \Stripe\Stripe::setVerifySslCerts(false);
 
-if ($result) {
-    if (isset($_POST['stripeToken'])) {
-        \Stripe\Stripe::setVerifySslCerts(false);
+    // Get the order ID from the POST data
+    $orderId = $_POST['order_id'];
 
-        // Assuming you have a loop fetching data from the database
-        while ($rows = mysqli_fetch_assoc($result)) {
-            $token = $_POST['stripeToken'];
+    // Fetch order tracking data from the database for the specific order
+    $sql = "SELECT * FROM `ordertracking` WHERE `order_id` = $orderId";
+    $result = mysqli_query($conn, $sql);
 
-            $amount_in_paise = $rows['total_price'] * 100; // Convert rupees to paise
-            $amount_in_paise = intval($amount_in_paise); // Ensure it's an integer
+    if ($result && mysqli_num_rows($result) > 0) {
+        // Assuming only one row is returned for the order
+        $orderData = mysqli_fetch_assoc($result);
 
-            try {
-                $data = \Stripe\Charge::create(array(
-                    "amount" => $amount_in_paise,
-                    "currency" => "inr",
-                    "description" => "Programming with Vishal Desc",
-                    "source" => $token,
-                ));
+        // Extract order details
+        $totalPrice = $orderData['total_price'] * 100; // Convert to cents
+        $currency = "inr";
+        $token = $_POST['stripeToken'];
 
-                // Update payment status in the database after a successful payment
-                if ($data->status == 'succeeded') {
-                    $orderId = $rows['order_id'];
-                    mysqli_query($conn, "UPDATE `ordertracking` SET `payment` = 'paid' WHERE `order_id` = $orderId");
-                }
+        try {
+            // Create a charge using Stripe API
+            $charge = \Stripe\Charge::create([
+                'amount' => $totalPrice,
+                'currency' => $currency,
+                'description' => "Payment for Order ID: $orderId",
+                'source' => $token,
+            ]);
 
-                echo "<pre>";
-                print_r($data);
-            } catch (Stripe\Error\InvalidRequest $e) {
-                echo "Error: " . $e->getMessage();
+            // Check if charge is successful
+            if ($charge->status == 'succeeded') {
+                // Update payment status in the database
+                mysqli_query($conn, "UPDATE `ordertracking` SET `status` = 'delivered', `payment` = 'paid' WHERE `order_id` = $orderId");
+                
+                // Output success message
+               header("Location:indexhome.php");
+            } else {
+                echo "Payment failed. Please try again later.";
             }
+        } catch (Exception $e) {
+            // Handle Stripe API errors
+            echo "Error: " . $e->getMessage();
         }
+    } else {
+        echo "Error: Order not found.";
     }
 } else {
-    echo "Error: " . mysqli_error($conn);
+    echo "Error: Stripe token not provided.";
 }
 
 mysqli_close($conn);
