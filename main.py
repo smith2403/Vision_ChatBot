@@ -47,10 +47,8 @@ def save_to_db(order: dict):
         if rcode == -1:
             return -1
 
-    # Calculate the total price for the order
     total_price = float(db_helper.get_total_order_price(next_order_id))
 
-    # Insert the order tracking details with total price
     db_helper.insert_order_tracking(next_order_id, "in progress", "Cash on delivery", total_price)
 
     return next_order_id
@@ -65,15 +63,14 @@ def complete_order(parameters: dict, session_id: str):
             fulfillment_text = "Sorry, I couldn't process your order due to a backend error. " \
                                "Please place a new order again"
         else:
-            order_total = float(db_helper.get_total_order_price(order_id))  # Convert to float
+            order_total = float(db_helper.get_total_order_price(order_id)) 
             
-            # Check if the total price is above 2200
             if order_total >= 2200:
-                discount_percentage = 0.25  # 25% discount
+                discount_percentage = 0.25 
             elif order_total >= 1200:
-                discount_percentage = 0.2  # 20% discount
+                discount_percentage = 0.2 
             else:
-                discount_percentage = 0  # No discount
+                discount_percentage = 0
             
             if discount_percentage > 0:
                 discount_amount = discount_percentage * order_total

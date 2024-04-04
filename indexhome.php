@@ -1,12 +1,9 @@
 <?php
 session_start();
-
-// Check if the login session is set
 if (isset($_SESSION["login"]) && $_SESSION["login"]) {
     $sessionId = "user-session-id";
     $includeMessenger = true;
 } else {
-    // Default to guest session if not logged in
     $sessionId = "guest-session-id";
     $includeMessenger = false;
 }
@@ -27,7 +24,6 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <?php
     if ($includeMessenger) {
-        // Include the messenger script if the user is logged in
         ?>
         <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     <?php
@@ -43,25 +39,31 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]) {
                     <h1 style="font-style: oblique;">Cresty</h1>
                 </div>
             </div>
-
             <div class="nav-search">
-                <div class="search-food">
-                    <h1>Greetings! <em>Desi Delights at Your Doorstep</em></h1>
+                <div class="add-bar">
+                    <i class="fa-solid fa-location-dot" style="color: #ff828b;"></i>
+                    <input type="text" class="input-add" placeholder="Charkop Naka, Mitchowky, Mumbai">
+                    <i class="fa-solid fa-sort-down" style="color: #505050;"></i>
                 </div>
-            </div> 
+                <div class="line">
+
+                </div>
+                <div class="search-food">
+                    <div class="search-icon">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #939393;"></i>
+                    </div>
+                    <input type="text" class="input-food" placeholder="Search for cuisine or a dish ">
+                </div>
+            </div>
             <div class="user-login">
             <?php
     if (isset($_SESSION["login"]) && $_SESSION["login"]) {
-        // User is logged in, display logout button
         echo '<a href="logout.php">Log out</a>';
-        echo '<a href="datadisp.php">Payments</a>';
+        echo '<a href="paymentdisp.php">Payments</a>';
     } else {
-        // User is not logged in, display login button
         echo '<a href="login.html">Log in</a>';
     }
     ?>
-                <!-- <a href="login.html">Log in</a> -->
-
                 <a href="register.html">Sign up</a>
             </div>
         </div>
@@ -598,7 +600,6 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]) {
 
         <?php
     if ($includeMessenger) {
-        // Include the messenger initialization with the appropriate session ID
         ?>
         <df-messenger intent="WELCOME" chat-title="Vision-ChatBot" agent-id="a28a7dfc-93ae-4161-9a32-8907602102fc"
             language-code="en" session-id="<?php echo $sessionId; ?>"></df-messenger>
